@@ -1,3 +1,8 @@
+# Netwerk
+
+Netwerk is a web (and soon to be mobile) application that humanizes and gamefies the networking experience.
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
