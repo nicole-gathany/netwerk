@@ -21,6 +21,7 @@ const NetworkingForm: React.FC = () => {
         "position": "",
         "spark": "",
     })
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -43,6 +44,7 @@ const NetworkingForm: React.FC = () => {
              // Handle success
             const response = await createNetworkingContact(newContact);
             console.log('Contact created:', response);
+            setIsSubmitted(true);
            
         } catch (error) {
             // Handle error
@@ -73,6 +75,7 @@ const NetworkingForm: React.FC = () => {
                         onChange={(e) => setFormData({...formData, "name": e.target.value})}
                         name="name" 
                         id="name"
+                        required
                     />
                     <button type="submit">Next</button>
                 </form>
@@ -109,6 +112,7 @@ const NetworkingForm: React.FC = () => {
                         onChange={(e) => setFormData({...formData, "company": e.target.value})}
                         name="company" 
                         id="company"
+                        required
                     />
                     <button onClick={goBack}>Back</button><button type="submit">Next</button>
                     
@@ -125,6 +129,7 @@ const NetworkingForm: React.FC = () => {
                         onChange={(e) => setFormData({...formData, "position": e.target.value})}
                         name="position" 
                         id="position"
+                        required
                         />
                   
                     <button onClick={goBack}>Back</button><button type="submit">Next</button>
@@ -133,7 +138,7 @@ const NetworkingForm: React.FC = () => {
             )
             case 5: 
             return (
-                <form onSubmit={handleNextStep}>
+                <form onSubmit={handleSubmit}>
                     <label htmlFor="spark">What did you all talk about?</label>
                 <input 
                     type="text" 
@@ -141,21 +146,37 @@ const NetworkingForm: React.FC = () => {
                     onChange={(e) => setFormData({...formData, "spark": e.target.value})}
                     name="spark" 
                     id="spark"
+                    required
                 />
                  {/* submit button here */}
                   
-                    <button onClick={goBack}>Back</button><button onClick={handleSubmit}>Submit</button>
+                    <button onClick={goBack}>Back</button><button type="submit">Submit</button>
                     
                 </form>
             )
         }
     }
 
+    const successMessage = 
+     <div>
+        <h1>
+            Success!
+        </h1>
+        <p>You have added {formData["name"]} to your network</p>
+
+        <h3>What next?</h3>
+        <p>Add them on social media</p>
+        <a href="https://www.linkedin.com/">LinkedIn</a>
+        <a href="https://bsky.app/">Bluesky</a>
+        <a href="https://x.com/home">Twitter</a>
+    </div>
+
     return (
         <div>
             <h1>Networking Form</h1>
 
-            {renderSurveyItem()}
+            {!isSubmitted && renderSurveyItem()}
+            {isSubmitted && successMessage}
                 
            
         </div>
