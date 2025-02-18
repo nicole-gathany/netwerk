@@ -21,12 +21,12 @@ interface NetworkingContact {
     "third-follow-up": boolean | null;
     "met-through-prompt": boolean | null;  
     "prompt-id": string | null;           // ID of the prompt
-    "completed-task": string | null;      // The actual task they helped complete
     "badge-earned": string | null;        // ID of badge earned through this interaction
 
 }
 
 export type NetworkingPrompt = {
+    $id: string
     "observation": string
     "question": string
     "category": string
@@ -63,6 +63,7 @@ export const getRandomPrompts = async (count: number= 3): Promise<NetworkingProm
        ]
     );
     return response.documents.map(doc => ({
+        $id: doc.$id,
         observation: doc.observation,
         question: doc.question,
         category: doc.category,

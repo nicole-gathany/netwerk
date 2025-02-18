@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { createNetworkingContact } from '../services/appwrite';
+import React, { useState, useEffect } from 'react';
+import { createNetworkingContact, getRandomPrompts, NetworkingPrompt } from '../services/appwrite';
 
 type FormData = {
 
@@ -8,6 +8,10 @@ type FormData = {
     "company": string;
     "position": string;
     "spark": string;
+    "met-through-prompt": boolean, 
+    "prompt-id":  string,           // ID of the prompt
+    "badge-earned": string,        // ID of badge earned through this interaction
+    
 }
 
 
@@ -20,13 +24,42 @@ const NetworkingForm: React.FC = () => {
         "company": "",
         "position": "",
         "spark": "",
+        "met-through-prompt": false, 
+        "prompt-id":  "",           // ID of the prompt
+        "badge-earned": "",        // ID of badge earned through this interaction
     })
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [prompts, setPrompts] = useState<NetworkingPrompt[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const determineBadge = (promptId: string): string => {
+        const badgeMapping: Record<string, string> = {
+            "appwrite-id-1": "Connector Badge",
+            "appwrite-id-2": "Conversation Starter Badge",
+            "appwrite-id-3": "Network Builder Badge",
+        };
+    
+        return badgeMapping[promptId] || "Default Badge 🚀";
+    };
+
+    useEffect(() => {
+        const fetchPrompts = async () => {
+        try {
+            const retrievedPrompts = await getRandomPrompts(); // Fetch from Appwrite
+            setPrompts(retrievedPrompts); // Store prompts in state
+        } catch (error) {
+            console.error("Error fetching prompts:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchPrompts();
+}, []);
 
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
+        console.log(formData, " is formData")
       
         
         const newContact = {
@@ -38,11 +71,11 @@ const NetworkingForm: React.FC = () => {
             "twitter-added": false,
             "second-follow-up": null,
             "third-follow-up": null,
-            "met-through-prompt": null, 
-            "prompt-id":  null,           // ID of the prompt
-            "completed-task": null,      // The actual task they helped complete
-            "badge-earned": null,        // ID of badge earned through this interaction
         };
+
+        
+
+        
 
         try {
              // Handle success
@@ -81,6 +114,7 @@ const NetworkingForm: React.FC = () => {
                         id="name"
                         required
                     />
+                    <br></br>
                     <button type="submit">Next</button>
                 </form>
                
@@ -99,6 +133,7 @@ const NetworkingForm: React.FC = () => {
                     id="event-name" 
                     placeholder="Render ATL"
                     />
+                    <br></br>
                     <button onClick={goBack}>Back</button><button type="submit">Next</button>
                     
                 </form>
@@ -118,6 +153,7 @@ const NetworkingForm: React.FC = () => {
                         id="company"
                         required
                     />
+                    <br></br>
                     <button onClick={goBack}>Back</button><button type="submit">Next</button>
                     
                 </form>
@@ -135,14 +171,14 @@ const NetworkingForm: React.FC = () => {
                         id="position"
                         required
                         />
-                  
+                        <br></br>
                     <button onClick={goBack}>Back</button><button type="submit">Next</button>
                     
                 </form>
             )
             case 5: 
             return (
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleNextStep}>
                     <label htmlFor="spark">What did you all talk about?</label>
                 <input 
                     type="text" 
@@ -153,25 +189,73 @@ const NetworkingForm: React.FC = () => {
                     required
                 />
                  {/* submit button here */}
-                  
-                    <button onClick={goBack}>Back</button><button type="submit">Submit</button>
+                 <br></br>
+                 <button onClick={goBack}>Back</button><button type="submit">Next</button>
+                    {/* <button onClick={goBack}>Back</button><button type="submit">Submit</button> */}
                     
                 </form>
             )
+
+            case 6:
+            return (
+                <form onSubmit={handleSubmit}>
+                    <label>Select a networking prompt:</label>
+                        <br />
+            
+                        {loading ? (
+                <p>Loading prompts...</p>
+                    ) : (
+                <select
+                    value={formData["prompt-id"] || ""}
+                    onChange={(e) => {
+                        const selectedPromptId = e.target.value;
+                        // const selectedPrompt = prompts.find(prompt => prompt.$id === selectedPromptId);
+                        const badge = determineBadge(selectedPromptId);
+
+                        const metThrough = selectedPromptId === "None" ? false : true;
+
+                        setFormData({
+                            ...formData,
+                            "met-through-prompt": metThrough,
+                            "prompt-id": selectedPromptId,
+                            "badge-earned": badge,
+                        });
+                    }}
+                >
+                    <option value="" disabled>Select a prompt</option>
+                    {prompts.map((prompt) => (
+                        <option key={prompt.$id} value={prompt.$id}>
+                            {prompt.observation} {/* Adjust this based on your Appwrite structure */}
+                        </option>
+                    ))}
+                    <option key={0}>None</option>
+                </select>
+            )}
+            
+            <br />
+            {formData["badge-earned"] && <p>Badge Earned: {formData["badge-earned"]}</p>}
+
+            <button onClick={goBack}>Back</button>
+            <button type="submit">Submit</button>
+        </form>
+    );
+
         }
     }
 
     const successMessage = 
      <div>
-        <h1>
+        <h2>
             Success!
-        </h1>
+        </h2>
         <p>You have added {formData["name"]} to your network</p>
 
         <h3>What next?</h3>
         <p>Add them on social media</p>
         <a href="https://www.linkedin.com/">LinkedIn</a>
+        <br></br>
         <a href="https://bsky.app/">Bluesky</a>
+        <br></br>
         <a href="https://x.com/home">Twitter</a>
     </div>
 
