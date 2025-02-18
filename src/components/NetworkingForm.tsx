@@ -37,7 +37,11 @@ const NetworkingForm: React.FC = () => {
             "bluesky-added": false,
             "twitter-added": false,
             "second-follow-up": null,
-            "third-follow-up": null
+            "third-follow-up": null,
+            "met-through-prompt": null, 
+            "prompt-id":  null,           // ID of the prompt
+            "completed-task": null,      // The actual task they helped complete
+            "badge-earned": null,        // ID of badge earned through this interaction
         };
 
         try {

@@ -1,4 +1,4 @@
-import { Client, Databases, ID, Models } from "appwrite";
+import { Client, Databases, ID, Models, Query } from "appwrite";
 
 const client = new Client()
     .setEndpoint('https://cloud.appwrite.io/v1')
@@ -19,6 +19,19 @@ interface NetworkingContact {
     "twitter-added": boolean;
     "second-follow-up": boolean | null;
     "third-follow-up": boolean | null;
+    "met-through-prompt": boolean | null;  
+    "prompt-id": string | null;           // ID of the prompt
+    "completed-task": string | null;      // The actual task they helped complete
+    "badge-earned": string | null;        // ID of badge earned through this interaction
+
+}
+
+export type NetworkingPrompt = {
+    "observation": string
+    "question": string
+    "category": string
+    "difficulty": number
+    "active": boolean
 }
 
 export const createNetworkingContact = async (contactData: NetworkingContact): Promise<Models.Document> => {
@@ -35,3 +48,29 @@ export const createNetworkingContact = async (contactData: NetworkingContact): P
         throw error;
     }
 };
+
+export const getRandomPrompts = async (count: number= 3): Promise<NetworkingPrompt[]> => {
+    try 
+    {
+        console.log("starting fetching")
+   
+        const response = await databases.listDocuments(
+        import.meta.env.VITE_APPWRITE_DATABASE_ID,
+        import.meta.env.VITE_APPWRITE_PROMPTS_COLLECTION_ID,
+       [
+        Query.equal("active", true),
+        Query.limit(count)
+       ]
+    );
+    return response.documents.map(doc => ({
+        observation: doc.observation,
+        question: doc.question,
+        category: doc.category,
+        difficulty: doc.difficulty,
+        active: doc.active
+    }));
+    } catch(error) {
+        console.error('Error creating contact:', error);
+        throw error;
+    }
+}
