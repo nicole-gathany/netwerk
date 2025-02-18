@@ -1,9 +1,14 @@
 # Netwerk
 
-Netwerk is a web (and soon to be mobile) application that humanizes and gamefies the networking experience.
+Netwerk is a web (and soon to be mobile) application that humanizes and gamefies the networking experience. 
+
+You can find it [here](https://netwerk.netlify.app/) 
+
+It looks like this: 
 
 ![screenshot](./src/assets/screenshot.png)
 
+Currently, there's no login but I plan to change that soon. 
 
 # React + TypeScript + Vite
 
