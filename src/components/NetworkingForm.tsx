@@ -261,7 +261,7 @@ const NetworkingForm: React.FC = () => {
 
     return (
         <div>
-            <h1>Networking Form</h1>
+            <h2>Networking Form</h2>
 
             {!isSubmitted && renderSurveyItem()}
             {isSubmitted && successMessage}

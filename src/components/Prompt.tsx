@@ -55,6 +55,7 @@ const Prompt: React.FC = () => {
 
 
     return (<div>
+        <h2>Prompt</h2>
         {!loading && !error && promptContent}
         {loading && loadingContent}
         {error && errorContent}
