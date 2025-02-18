@@ -2,6 +2,8 @@
 
 Netwerk is a web (and soon to be mobile) application that humanizes and gamefies the networking experience.
 
+![screenshot](./src/assets/screenshot.png)
+
 
 # React + TypeScript + Vite
 
