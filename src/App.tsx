@@ -2,6 +2,7 @@
 import NetworkingForm from "./components/NetworkingForm";
 import Prompt from "./components/Prompt";
 import ShowContacts from "./components/ShowContact";
+import "./App.css";
 
 export default function App(){
   return (
