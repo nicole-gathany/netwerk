@@ -23,11 +23,13 @@ a:hover {
 }
 
 body {
-  margin: 0;
+  margin: 5px;
+  padding: 10px;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  /* background-color: red; */
 }
 
 h1 {
@@ -65,4 +67,10 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+li {
+  padding: 10px;
+  /* background-color: white;
+  color: black; */
 }

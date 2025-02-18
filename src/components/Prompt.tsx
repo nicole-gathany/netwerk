@@ -40,8 +40,8 @@ const Prompt: React.FC = () => {
 
     const promptContent = prompt && prompt.observation && prompt.question ? (
         <div key={promptIndex}>
-            <p>{prompt.observation}</p>
-            <p>{prompt.question}</p>
+            <p><strong>Search:</strong> {prompt.observation}</p>
+            <p><strong>Conversation starter:</strong> {prompt.question}</p>
         </div>
     ) : (
         <div>No prompts available.</div> // Display a fallback message if prompt data is empty
