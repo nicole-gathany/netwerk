@@ -45,6 +45,7 @@ const ShowContacts: React.FC = () => {
                 <div><strong>Event:</strong> {contact["event-name"]}</div>
                 <div><strong>Company:</strong> {contact.company}</div>
                 <div><strong>Position:</strong> {contact.position}</div>
+                <div><strong>Spark:</strong> {contact["spark"]}</div>
                 <div><strong>Follow-up:</strong> {contact["follow-up"] ? "Yes" : "No"}</div>
                 <div><strong>LinkedIn Added:</strong> {contact["linkedin-added"] ? "Yes" : "No"}</div>
                 <div><strong>Twitter Added:</strong> {contact["twitter-added"] ? "Yes" : "No"}</div>
