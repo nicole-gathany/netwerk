@@ -59,7 +59,7 @@ const NetworkingForm: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(formData, " is formData")
+       
       
         
         const newContact = {

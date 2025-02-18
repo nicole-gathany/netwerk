@@ -11,8 +11,7 @@ const Prompt: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    console.log(promptIndex)
-    console.log(prompts)
+  
 
     useEffect(() => {
         const fetchedPrompts = async () => {
